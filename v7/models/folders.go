@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"strings"
 	"time"
 )
 
@@ -32,43 +31,43 @@ type Folder struct {
 	HasAcl    bool
 }
 
-// GetDashboardModel turns the command into the saveable model
-func (cmd *CreateFolderCommand) GetDashboardModel(orgId int64, userId int64) *Dashboard {
-	dashFolder := NewDashboardFolder(strings.TrimSpace(cmd.Title))
-	dashFolder.OrgId = orgId
-	dashFolder.SetUid(strings.TrimSpace(cmd.Uid))
+// // GetDashboardModel turns the command into the saveable model
+// func (cmd *CreateFolderCommand) GetDashboardModel(orgId int64, userId int64) *Dashboard {
+// 	dashFolder := NewDashboardFolder(strings.TrimSpace(cmd.Title))
+// 	dashFolder.OrgId = orgId
+// 	dashFolder.SetUid(strings.TrimSpace(cmd.Uid))
 
-	if userId == 0 {
-		userId = -1
-	}
+// 	if userId == 0 {
+// 		userId = -1
+// 	}
 
-	dashFolder.CreatedBy = userId
-	dashFolder.UpdatedBy = userId
-	dashFolder.UpdateSlug()
+// 	dashFolder.CreatedBy = userId
+// 	dashFolder.UpdatedBy = userId
+// 	dashFolder.UpdateSlug()
 
-	return dashFolder
-}
+// 	return dashFolder
+// }
 
-// UpdateDashboardModel updates an existing model from command into model for update
-func (cmd *UpdateFolderCommand) UpdateDashboardModel(dashFolder *Dashboard, orgId int64, userId int64) {
-	dashFolder.OrgId = orgId
-	dashFolder.Title = strings.TrimSpace(cmd.Title)
-	dashFolder.Data.Set("title", dashFolder.Title)
+// // UpdateDashboardModel updates an existing model from command into model for update
+// func (cmd *UpdateFolderCommand) UpdateDashboardModel(dashFolder *Dashboard, orgId int64, userId int64) {
+// 	dashFolder.OrgId = orgId
+// 	dashFolder.Title = strings.TrimSpace(cmd.Title)
+// 	dashFolder.Data.Set("title", dashFolder.Title)
 
-	if cmd.Uid != "" {
-		dashFolder.SetUid(cmd.Uid)
-	}
+// 	if cmd.Uid != "" {
+// 		dashFolder.SetUid(cmd.Uid)
+// 	}
 
-	dashFolder.SetVersion(cmd.Version)
-	dashFolder.IsFolder = true
+// 	dashFolder.SetVersion(cmd.Version)
+// 	dashFolder.IsFolder = true
 
-	if userId == 0 {
-		userId = -1
-	}
+// 	if userId == 0 {
+// 		userId = -1
+// 	}
 
-	dashFolder.UpdatedBy = userId
-	dashFolder.UpdateSlug()
-}
+// 	dashFolder.UpdatedBy = userId
+// 	dashFolder.UpdateSlug()
+// }
 
 //
 // COMMANDS

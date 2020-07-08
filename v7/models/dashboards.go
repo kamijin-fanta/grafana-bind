@@ -96,94 +96,94 @@ func (d *Dashboard) GetDashboardIdForSavePermissionCheck() int64 {
 	return d.Id
 }
 
-// NewDashboard creates a new dashboard
-func NewDashboard(title string) *Dashboard {
-	dash := &Dashboard{}
-	dash.Data = simplejson.New()
-	dash.Data.Set("title", title)
-	dash.Title = title
-	dash.Created = time.Now()
-	dash.Updated = time.Now()
-	dash.UpdateSlug()
-	return dash
-}
+// // NewDashboard creates a new dashboard
+// func NewDashboard(title string) *Dashboard {
+// 	dash := &Dashboard{}
+// 	dash.Data = simplejson.New()
+// 	dash.Data.Set("title", title)
+// 	dash.Title = title
+// 	dash.Created = time.Now()
+// 	dash.Updated = time.Now()
+// 	dash.UpdateSlug()
+// 	return dash
+// }
 
-// NewDashboardFolder creates a new dashboard folder
-func NewDashboardFolder(title string) *Dashboard {
-	folder := NewDashboard(title)
-	folder.IsFolder = true
-	folder.Data.Set("schemaVersion", 17)
-	folder.Data.Set("version", 0)
-	folder.IsFolder = true
-	return folder
-}
+// // NewDashboardFolder creates a new dashboard folder
+// func NewDashboardFolder(title string) *Dashboard {
+// 	folder := NewDashboard(title)
+// 	folder.IsFolder = true
+// 	folder.Data.Set("schemaVersion", 17)
+// 	folder.Data.Set("version", 0)
+// 	folder.IsFolder = true
+// 	return folder
+// }
 
-// GetTags turns the tags in data json into go string array
-func (dash *Dashboard) GetTags() []string {
-	return dash.Data.Get("tags").MustStringArray()
-}
+// // GetTags turns the tags in data json into go string array
+// func (dash *Dashboard) GetTags() []string {
+// 	return dash.Data.Get("tags").MustStringArray()
+// }
 
-func NewDashboardFromJson(data *simplejson.Json) *Dashboard {
-	dash := &Dashboard{}
-	dash.Data = data
-	dash.Title = dash.Data.Get("title").MustString()
-	dash.UpdateSlug()
-	update := false
+// func NewDashboardFromJson(data *simplejson.Json) *Dashboard {
+// 	dash := &Dashboard{}
+// 	dash.Data = data
+// 	dash.Title = dash.Data.Get("title").MustString()
+// 	dash.UpdateSlug()
+// 	update := false
 
-	if id, err := dash.Data.Get("id").Float64(); err == nil {
-		dash.Id = int64(id)
-		update = true
-	}
+// 	if id, err := dash.Data.Get("id").Float64(); err == nil {
+// 		dash.Id = int64(id)
+// 		update = true
+// 	}
 
-	if uid, err := dash.Data.Get("uid").String(); err == nil {
-		dash.Uid = uid
-		update = true
-	}
+// 	if uid, err := dash.Data.Get("uid").String(); err == nil {
+// 		dash.Uid = uid
+// 		update = true
+// 	}
 
-	if version, err := dash.Data.Get("version").Float64(); err == nil && update {
-		dash.Version = int(version)
-		dash.Updated = time.Now()
-	} else {
-		dash.Data.Set("version", 0)
-		dash.Created = time.Now()
-		dash.Updated = time.Now()
-	}
+// 	if version, err := dash.Data.Get("version").Float64(); err == nil && update {
+// 		dash.Version = int(version)
+// 		dash.Updated = time.Now()
+// 	} else {
+// 		dash.Data.Set("version", 0)
+// 		dash.Created = time.Now()
+// 		dash.Updated = time.Now()
+// 	}
 
-	if gnetId, err := dash.Data.Get("gnetId").Float64(); err == nil {
-		dash.GnetId = int64(gnetId)
-	}
+// 	if gnetId, err := dash.Data.Get("gnetId").Float64(); err == nil {
+// 		dash.GnetId = int64(gnetId)
+// 	}
 
-	return dash
-}
+// 	return dash
+// }
 
-// GetDashboardModel turns the command into the saveable model
-func (cmd *SaveDashboardCommand) GetDashboardModel() *Dashboard {
-	dash := NewDashboardFromJson(cmd.Dashboard)
-	userId := cmd.UserId
+// // GetDashboardModel turns the command into the saveable model
+// func (cmd *SaveDashboardCommand) GetDashboardModel() *Dashboard {
+// 	dash := NewDashboardFromJson(cmd.Dashboard)
+// 	userId := cmd.UserId
 
-	if userId == 0 {
-		userId = -1
-	}
+// 	if userId == 0 {
+// 		userId = -1
+// 	}
 
-	dash.UpdatedBy = userId
-	dash.OrgId = cmd.OrgId
-	dash.PluginId = cmd.PluginId
-	dash.IsFolder = cmd.IsFolder
-	dash.FolderId = cmd.FolderId
-	dash.UpdateSlug()
-	return dash
-}
+// 	dash.UpdatedBy = userId
+// 	dash.OrgId = cmd.OrgId
+// 	dash.PluginId = cmd.PluginId
+// 	dash.IsFolder = cmd.IsFolder
+// 	dash.FolderId = cmd.FolderId
+// 	dash.UpdateSlug()
+// 	return dash
+// }
 
 // GetString a
 func (dash *Dashboard) GetString(prop string, defaultValue string) string {
 	return dash.Data.Get(prop).MustString(defaultValue)
 }
 
-// UpdateSlug updates the slug
-func (dash *Dashboard) UpdateSlug() {
-	title := dash.Data.Get("title").MustString()
-	dash.Slug = SlugifyTitle(title)
-}
+// // UpdateSlug updates the slug
+// func (dash *Dashboard) UpdateSlug() {
+// 	title := dash.Data.Get("title").MustString()
+// 	dash.Slug = SlugifyTitle(title)
+// }
 
 // func SlugifyTitle(title string) string {
 // 	s := slug.Make(strings.ToLower(title))
